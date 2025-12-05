@@ -9,14 +9,15 @@ class RulesBuilder;
 
 class Rules {
 public:
-    bool DoesKill(NPCTypes attacker, NPCTypes defender) const noexcept;
+    Rules() = default;
+    bool DoesKill(NPCType attacker, NPCType defender) const noexcept;
 
-    void setRadiusOfMurder(double radius) noexcept;
-    double getRadiusOfMurder() const noexcept;
+    void setRadiusOfMurder(double radius);
+    double getRadiusOfMurder() const;
 
 private:
     friend class RulesBuilder;
-    using StorageType = std::map<NPCTypes, std::set<NPCTypes>>;
+    using StorageType = std::map<NPCType, std::set<NPCType>>;
 
     Rules(StorageType&& killingData);
     StorageType storage_;
@@ -25,8 +26,9 @@ private:
 
 class RulesBuilder {
 public:
-    RulesBuilder& AddRule(NPCTypes attacker, NPCTypes victim);
+    RulesBuilder& AddRule(NPCType attacker, NPCType victim);
     Rules Build();
+
 private:
     Rules::StorageType storage_;
 };

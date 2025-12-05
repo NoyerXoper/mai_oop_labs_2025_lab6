@@ -1,20 +1,16 @@
 #pragma once
 
 #include <memory>
+#include <ostream>
 
-enum class NPCTypes: int{
-    Unknown,
-    Knight,
-    Druid,
-    Elven
-};
+#include "vec.hpp"
 
-struct Vec2 {
-    int x;
-    int y;
+enum class NPCType : int { Knight, Druid, Elf, Unknown };
 
-
-};
+namespace NPCTypeConverter {
+NPCType StringToNPCType(const std::string& name);
+std::string NPCTypeToString(NPCType type);
+}  // namespace NPCTypeConverter
 
 class Visitor;
 
@@ -22,40 +18,28 @@ class Knight;
 class Druid;
 class Elven;
 
-class NPC {
-friend class Visitor;
-friend class FightVisitor;
-public:
-    NPC(std::string_view name, int x, int y);
+class World;
 
-    NPCTypes getType() const noexcept;
+class NPC {
+    friend class Visitor;
+    friend class FightVisitor;
+
+public:
+    using NumberType = int;
+    NPC(std::string_view name, NumberType x, NumberType y);
+
+    NPCType getType() const noexcept;
+    const std::string& getName() const noexcept;
+    const vec::Vec<NumberType>& getPos() const noexcept;
+    virtual ~NPC() noexcept = default;
 
 protected:
     virtual void Accept(Visitor& visitor, World& world) = 0;
 
 protected:
     std::string name_;
-    NPCTypes type_ = NPCTypes::Unknown;
-    Vec2 pos_;
+    NPCType type_ = NPCType::Unknown;
+    vec::Vec<NumberType> pos_;
 };
 
-class Knight: public NPC {
-public: 
-    Knight(std::string_view name, int x, int y);
-protected:
-    virtual void Accept(Visitor& visitor, World& world) override;
-};
-
-class Druid: public NPC {
-public: 
-    Druid(std::string_view name, int x, int y);
-protected:
-    virtual void Accept(Visitor& visitor, World& world) override;
-};
-
-class Elven: public NPC {
-public: 
-    Elven(std::string_view name, int x, int y);
-protected:
-    virtual void Accept(Visitor& visitor, World& world) override;
-};
+std::ostream& operator<<(std::ostream& out, const NPC& npc);

@@ -8,36 +8,30 @@
 class World;
 
 class Visitor {
-friend class Knight;
-friend class Druid;
-friend class Elven;
-public: 
-    // Visitor will deleted killed npcs
+    friend class Knight;
+    friend class Druid;
+    friend class Elven;
+
+public:
     virtual void Visit(World& world) = 0;
 
-protected:
-    virtual void Visit(const Knight& knight, World& world) = 0;
-    virtual void Visit(const Druid& druid, World& world) = 0;
-    virtual void Visit(const Elven& Elven, World& world) = 0;
+    virtual void Visit(const NPC& npc, World& world) = 0;
 };
 
-// The argument of visit method is "killer"
-class FightVisitor: public Visitor {
+class FightVisitor : public Visitor {
 public:
+    FightVisitor() = default;
     FightVisitor(const Rules& rules);
     FightVisitor(Rules&& rules);
 
+    void setRaidusOfMurder(double radius);
+    double getRaidusOfMurder() const;
+
     virtual void Visit(World& world) override;
 
-    void setRaidusOfMurder(double radius) noexcept;
-    double getRaidusOfMurder() const noexcept;
-
-protected:
-    virtual void Visit(const Knight& knight, World& world) override;
-    virtual void Visit(const Druid& druid, World& world) override;
-    virtual void Visit(const Elven& elven, World& world) override;
+    virtual void Visit(const NPC& npc, World& world) override;
 
 private:
-    std::set<std::size_t> killed_;
+    std::set<std::shared_ptr<NPC>> killed_;
     Rules rules_;
 };
