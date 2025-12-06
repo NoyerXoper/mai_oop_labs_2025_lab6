@@ -5,6 +5,7 @@
 
 #include "vec.hpp"
 
+namespace game {
 enum class NPCType : int { Knight, Druid, Elf, Unknown };
 
 namespace NPCTypeConverter {
@@ -43,3 +44,4 @@ protected:
 };
 
 std::ostream& operator<<(std::ostream& out, const NPC& npc);
+}  // namespace game

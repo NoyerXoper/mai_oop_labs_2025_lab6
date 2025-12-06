@@ -2,6 +2,7 @@
 #include "npc.hpp"
 #include "world.hpp"
 
+namespace game {
 FightVisitor::FightVisitor(const Rules& rules)
     : rules_(rules) {}
 
@@ -39,3 +40,4 @@ void FightVisitor::Visit(const NPC& attacker, World& world) {
         }
     }
 }
+}  // namespace game

@@ -4,6 +4,7 @@
 
 #include "npc.hpp"
 
+namespace game {
 class NPCObserver {
 public:
     virtual void update(const NPC& attacker, const NPC& defender) = 0;
@@ -24,3 +25,4 @@ public:
 private:
     std::ofstream out_;
 };
+}  // namespace game

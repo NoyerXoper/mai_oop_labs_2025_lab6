@@ -7,6 +7,7 @@
 #include "exceptions.hpp"
 #include "visitor.hpp"
 
+namespace game {
 NPCType NPCTypeConverter::StringToNPCType(const std::string& name) {
     static const std::map<std::string, NPCType> types = {
         {"knight", NPCType::Knight},
@@ -50,3 +51,4 @@ std::ostream& operator<<(std::ostream& out, const NPC& npc) {
         << npc.getName() << " at " << npc.getPos();
     return out;
 }
+}  // namespace game

@@ -8,6 +8,7 @@
 #include "observer.hpp"
 #include "visitor.hpp"
 
+namespace game {
 class World {
     using NPCStorageType = std::set<std::shared_ptr<NPC>>;
     using ObserverStorageType = std::set<std::shared_ptr<NPCObserver>>;
@@ -52,3 +53,4 @@ private:
     ObserverStorageType observers_;
     double radiusOfMurder;
 };
+}  // namespace game

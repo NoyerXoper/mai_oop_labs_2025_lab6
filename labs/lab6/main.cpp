@@ -10,19 +10,19 @@
 #include "world.hpp"
 
 int main() {
-    World world;
-    Rules rules = RulesBuilder()
-                      .AddRule(NPCType::Knight, NPCType::Elf)
-                      .AddRule(NPCType::Elf, NPCType::Druid)
-                      .AddRule(NPCType::Elf, NPCType::Knight)
-                      .AddRule(NPCType::Druid, NPCType::Druid)
-                      .Build();
-    std::shared_ptr<FightVisitor> visitor =
-        std::make_shared<FightVisitor>(rules);
-    std::shared_ptr<NPCObserver> console_observer =
-        std::make_shared<ConsoleLogMurderObserver>();
-    std::shared_ptr<NPCObserver> file_observer =
-        std::make_shared<FileLogMurderObserver>("./log.txt");
+    game::World world;
+    game::Rules rules = game::RulesBuilder()
+                            .AddRule(game::NPCType::Knight, game::NPCType::Elf)
+                            .AddRule(game::NPCType::Elf, game::NPCType::Druid)
+                            .AddRule(game::NPCType::Elf, game::NPCType::Knight)
+                            .AddRule(game::NPCType::Druid, game::NPCType::Druid)
+                            .Build();
+    std::shared_ptr<game::FightVisitor> visitor =
+        std::make_shared<game::FightVisitor>(rules);
+    std::shared_ptr<game::NPCObserver> console_observer =
+        std::make_shared<game::ConsoleLogMurderObserver>();
+    std::shared_ptr<game::NPCObserver> file_observer =
+        std::make_shared<game::FileLogMurderObserver>("./log.txt");
     world.AttachObserver(console_observer);
     world.AttachObserver(file_observer);
     bool running = true;
@@ -39,7 +39,7 @@ int main() {
         switch (action) {
         case 1: {
             std::cout << "Enter NPC type(knight/druid/elf (in lower case)): ";
-            NPCType type;
+            game::NPCType type;
             std::string string_action;
             for (;;) {
                 try {
@@ -47,7 +47,8 @@ int main() {
                     if (string_action == "exit") {
                         break;
                     }
-                    type = NPCTypeConverter::StringToNPCType(string_action);
+                    type =
+                        game::NPCTypeConverter::StringToNPCType(string_action);
                     std::string name;
                     std::cout << "Enter name of npc: ";
                     std::cin >> std::ws;

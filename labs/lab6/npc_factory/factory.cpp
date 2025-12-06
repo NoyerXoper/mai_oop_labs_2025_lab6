@@ -5,15 +5,16 @@
 #include "knight.hpp"
 
 namespace factory {
-std::shared_ptr<NPC> CreateNPC(NPCType type, std::string_view name,
-                               NPC::NumberType x, NPC::NumberType y) {
+std::shared_ptr<game::NPC> CreateNPC(game::NPCType type, std::string_view name,
+                                     game::NPC::NumberType x,
+                                     game::NPC::NumberType y) {
     switch (type) {
-    case NPCType::Knight:
-        return std::make_shared<Knight>(name, x, y);
-    case NPCType::Druid:
-        return std::make_shared<Druid>(name, x, y);
-    case NPCType::Elf:
-        return std::make_shared<Elf>(name, x, y);
+    case game::NPCType::Knight:
+        return std::make_shared<game::Knight>(name, x, y);
+    case game::NPCType::Druid:
+        return std::make_shared<game::Druid>(name, x, y);
+    case game::NPCType::Elf:
+        return std::make_shared<game::Elf>(name, x, y);
     default:
         throw exceptions::BadNPCTypeException("Invalid type of NPC");
     }

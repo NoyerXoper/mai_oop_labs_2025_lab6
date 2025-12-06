@@ -1,6 +1,7 @@
 #include "rules.hpp"
 #include "exceptions.hpp"
 
+namespace game {
 Rules::Rules(Rules::StorageType&& killingData)
     : storage_(std::move(killingData)) {}
 
@@ -31,3 +32,4 @@ RulesBuilder& RulesBuilder::AddRule(NPCType attacker, NPCType victim) {
 Rules RulesBuilder::Build() {
     return Rules(std::move(storage_));
 }
+}  // namespace game

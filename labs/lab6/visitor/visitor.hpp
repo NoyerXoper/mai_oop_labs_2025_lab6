@@ -5,6 +5,7 @@
 #include "npc.hpp"
 #include "rules.hpp"
 
+namespace game {
 class World;
 
 class Visitor {
@@ -35,3 +36,4 @@ private:
     std::set<std::shared_ptr<NPC>> killed_;
     Rules rules_;
 };
+}  // namespace game

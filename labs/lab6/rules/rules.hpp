@@ -5,7 +5,7 @@
 
 #include "npc.hpp"
 
-class RulesBuilder;
+namespace game {
 
 class Rules {
 public:
@@ -32,3 +32,4 @@ public:
 private:
     Rules::StorageType storage_;
 };
+}  // namespace game

@@ -1,7 +1,9 @@
 #include "world.hpp"
+
 #include "exceptions.hpp"
 #include "factory.hpp"
 
+namespace game {
 World::IterateOverNPCStruct::IterateOverNPCStruct(World& world)
     : world_(world) {}
 
@@ -106,3 +108,4 @@ void World::NotifyObservers(const NPC& attacker, const NPC& victim) {
         observer->update(attacker, victim);
     }
 }
+}  // namespace game

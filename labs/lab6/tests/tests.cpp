@@ -7,9 +7,10 @@
 #include "npc.hpp"
 #include "world.hpp"
 
-class TestObserver : public NPCObserver {
-public: 
-    virtual void update(const NPC& attacker, const NPC& victim) override {
+class TestObserver : public game::NPCObserver {
+public:
+    virtual void update(const game::NPC& attacker,
+                        const game::NPC& victim) override {
         ++updated_times;
     }
     std::size_t updated_times = 0;
@@ -18,34 +19,38 @@ public:
 class WorldTest : public ::testing::Test {
 protected:
     void SetUp() override {
-        world = World();
-        Rules rules = RulesBuilder()
-                          .AddRule(NPCType::Knight, NPCType::Elf)
-                          .AddRule(NPCType::Elf, NPCType::Druid)
-                          .AddRule(NPCType::Elf, NPCType::Knight)
-                          .AddRule(NPCType::Druid, NPCType::Druid)
-                          .Build();
-        fight_visitor = FightVisitor(rules);
+        world = game::World();
+        game::Rules rules =
+            game::RulesBuilder()
+                .AddRule(game::NPCType::Knight, game::NPCType::Elf)
+                .AddRule(game::NPCType::Elf, game::NPCType::Druid)
+                .AddRule(game::NPCType::Elf, game::NPCType::Knight)
+                .AddRule(game::NPCType::Druid, game::NPCType::Druid)
+                .Build();
+        fight_visitor = game::FightVisitor(rules);
     }
 
     void AddNPCS(std::size_t amount) {
-        for(std::size_t i = 0; i < amount; ++i) {
-            world.EmplaceNPC(static_cast<NPCType>(i % static_cast<int>(NPCType::Unknown)), "Name", i % World::MAX_X, i*i % World::MAX_Y);
+        for (std::size_t i = 0; i < amount; ++i) {
+            world.EmplaceNPC(static_cast<game::NPCType>(
+                                 i % static_cast<int>(game::NPCType::Unknown)),
+                             "Name", i % game::World::MAX_X,
+                             i * i % game::World::MAX_Y);
         }
     }
 
-    World world;
-    FightVisitor fight_visitor;
+    game::World world;
+    game::FightVisitor fight_visitor;
 };
 
 TEST(FactoryTest, Creation) {
-    auto npc1 = factory::CreateNPC(NPCType::Knight, "knight", 2, 2);
-    auto npc2 = factory::CreateNPC(NPCType::Druid, "druid", 2, 2);
-    auto npc3 = factory::CreateNPC(NPCType::Elf, "elf", 2, 2);
+    auto npc1 = factory::CreateNPC(game::NPCType::Knight, "knight", 2, 2);
+    auto npc2 = factory::CreateNPC(game::NPCType::Druid, "druid", 2, 2);
+    auto npc3 = factory::CreateNPC(game::NPCType::Elf, "elf", 2, 2);
 
-    EXPECT_EQ(npc1->getType(), NPCType::Knight);
-    EXPECT_EQ(npc2->getType(), NPCType::Druid);
-    EXPECT_EQ(npc3->getType(), NPCType::Elf);
+    EXPECT_EQ(npc1->getType(), game::NPCType::Knight);
+    EXPECT_EQ(npc2->getType(), game::NPCType::Druid);
+    EXPECT_EQ(npc3->getType(), game::NPCType::Elf);
 
     EXPECT_EQ(npc1->getName(), "knight");
     EXPECT_EQ(npc2->getName(), "druid");
@@ -58,12 +63,14 @@ TEST(FactoryTest, Creation) {
 
 TEST_F(WorldTest, AdditonOfNPCTest) {
     EXPECT_NO_THROW({
-        this->world.AddNPC(factory::CreateNPC(NPCType::Druid, "druid", 2, 2));
+        this->world.AddNPC(
+            factory::CreateNPC(game::NPCType::Druid, "druid", 2, 2));
     });
 }
 
 TEST_F(WorldTest, EmplacingOfNPCTest) {
-    EXPECT_NO_THROW({ this->world.EmplaceNPC(NPCType::Druid, "druid", 2, 2); });
+    EXPECT_NO_THROW(
+        { this->world.EmplaceNPC(game::NPCType::Druid, "druid", 2, 2); });
 }
 
 TEST_F(WorldTest, KillTest) {
@@ -78,8 +85,8 @@ TEST_F(WorldTest, KillTest) {
 }
 
 TEST_F(WorldTest, CarnageTest) {
-    auto knight = factory::CreateNPC(NPCType::Knight, "knight", 0, 0);
-    auto elf = factory::CreateNPC(NPCType::Elf, "elf", 0, 0);
+    auto knight = factory::CreateNPC(game::NPCType::Knight, "knight", 0, 0);
+    auto elf = factory::CreateNPC(game::NPCType::Elf, "elf", 0, 0);
 
     world.AddNPC(knight);
     world.AddNPC(elf);
